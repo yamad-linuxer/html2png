@@ -1,8 +1,13 @@
 # the Html To Png(base64) API
-即席API
-中でChromiumが走ってます
 
-# How To
+即席API
+
+/usr/bin/chromiumを使います
+
+## How To
+
+デフォルトのポートは`19810`です。
+
 ```
 $ git clone https://github.com/yamad-linuer/html2png
 
@@ -11,13 +16,14 @@ $ cd html2png
 $ npm i
 
 $ node app.js
-
 ```
 
-# API
+## API
 
-## 送信
+### 送信
+
 JSONをPOSTしてください。
+
 ```
 {
     "source": "<!--実際のソース-->",
@@ -26,13 +32,15 @@ JSONをPOSTしてください。
 }
 ```
 
-## 受信
+### 受信
+
 JSONが帰ってきます。
+
 ```
 {
     "png-base64": "data:image/png;base64,ABC114514GG",
+    "source": "<!--ソースがそのまま帰ってきます-->",
     "width": 1234,
-    "height: 4321,
-    "source": "<!--ソースがそのまま帰ってきます-->"
+    "height: 4321
 }
 ```
