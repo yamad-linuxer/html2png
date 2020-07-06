@@ -1,0 +1,24 @@
+{
+  "name": "html2png",
+  "version": "1.0.0",
+  "description": "The API returns png from html",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yamad-linuxer/html2png.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yamad-linuxer/html2png/issues"
+  },
+  "homepage": "https://github.com/yamad-linuxer/html2png#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "node-html-to-image": "^3.0.0"
+  }
+}
