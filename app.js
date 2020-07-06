@@ -32,22 +32,27 @@ app.post('/', async (req, res)=> {
         return
     };
 
-    const img = await h2i({
-        html: sourceHtml,
-        vp: [resWidth,resHeight],
-        puppeteerArgs: {
-            executablePath: '/usr/bin/chromium',
-            headless: true
-        }
-    });
-    const bImg = new Buffer.from(img);
-    res.json({
-        "png-base64": 'data:image/png;base64,'+bImg.toString('base64'),
-        // "png": bImg.toString('binary'),
-        "width: ": resWidth,
-        "height": resHeight,
-        "source": sourceHtml
-    });
+    try {
+        const img = await h2i({
+            html: sourceHtml,
+            vp: [resWidth,resHeight],
+            puppeteerArgs: {
+                executablePath: '/usr/bin/chromium',
+                headless: true
+            }
+        });
+        const bImg = new Buffer.from(img);
+        res.json({
+            "png-base64": 'data:image/png;base64,'+bImg.toString('base64'),
+            // "png": bImg.toString('binary'),
+            "width: ": resWidth,
+            "height": resHeight,
+            "source": sourceHtml
+        });
+    } catch(err) {
+        res.status(500).send('bad API call.');
+        putLog('Generating IMG error', err);
+    }
 });
 
 app.listen(port, ()=> {
