@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const h2i = require('node-html-to-image');
+const h2i = require('./h2i.js');
 
 const app = express();
 const port = 19810;
@@ -24,7 +24,13 @@ app.post('/', async (req, res)=> {
     putLog('POST request received.');
     const sourceHtml = req.body.source;
 
-    const img = await h2i({html: sourceHtml});
+    const img = await h2i({
+        html: sourceHtml,
+        puppeteerArgs: {
+            executablePath: '/usr/bin/chromium',
+            headless: true
+        }
+    });
     const bImg = new Buffer.from(img);
     res.json({
         "png-base64": 'data:image/png;base64,'+bImg.toString('base64'),
