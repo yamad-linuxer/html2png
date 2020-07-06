@@ -39,6 +39,8 @@ app.post('/', async (req, res)=> {
     res.json({
         "png-base64": 'data:image/png;base64,'+bImg.toString('base64'),
         // "png": bImg.toString('binary'),
+        "width: ": resWidth,
+        "height": resHeight,
         "source": sourceHtml
     });
 });
