@@ -13,12 +13,12 @@ module.exports = async options => {
     const cluster = await Cluster.launch({
         concurrency: Cluster.CONCURRENCY_CONTEXT,
         maxConcurrency: 2,
-        puppeteerOptions: { ...puppeteerArgs, headless: true },
+        puppeteerOptions: {...puppeteerArgs}
     });
   
-    let buffers = []
+    let buffers = [];
   
-    await cluster.task(async ({ page, data: {content}}) => {
+    await cluster.task(async ({page, data: {content}}) => {
         buffers.push(await (async (page, {
                 content,
                 html,
@@ -26,12 +26,12 @@ module.exports = async options => {
                 waitUntil = 'networkidle0',
             })=> {
                 if (content) {
-                  const template = handlebars.compile(html)
-                  html = template(content)
-                }
-                await page.setContent(html, { waitUntil })
-                const element = await page.$('body')
-                const buffer = await element.screenshot({omitBackground: transparent})
+                  const template = handlebars.compile(html);
+                  html = template(content);
+                };
+                await page.setContent(html, {waitUntil});
+                const element = await page.$('body');
+                const buffer = await element.screenshot({omitBackground: transparent});
   
                 return buffer
             })(page, { ...options, content})
