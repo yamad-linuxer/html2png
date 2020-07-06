@@ -22,12 +22,13 @@ app.get('/', (req,res)=> {
 
 app.post('/', async (req, res)=> {
     putLog('POST request received.');
-
     const sourceHtml = req.body.source;
 
+    const img = await h2i({html: sourceHtml});
+    const bImg = new Buffer.from(img);
     res.json({
-        "png-base64": "poyopoyopoyopoyo",
-        "png": "poyopoyo",
+        "png-base64": 'data:image/png;base64,'+bImg.toString('base64'),
+        // "png": bImg.toString('binary'),
         "source": sourceHtml
     });
 });
