@@ -27,6 +27,11 @@ app.post('/', async (req, res)=> {
     const resWidth = req.body.width;
     const resHeight = req.body.height;
 
+    if (!(resWidth > 0 && resHeight > 0)) {
+        res.status(400).send('bad API call.');
+        return
+    };
+
     const img = await h2i({
         html: sourceHtml,
         vp: [resWidth,resHeight],
