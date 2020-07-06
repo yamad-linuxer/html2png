@@ -22,10 +22,14 @@ app.get('/', (req,res)=> {
 
 app.post('/', async (req, res)=> {
     putLog('POST request received.');
+
     const sourceHtml = req.body.source;
+    const resWidth = req.body.width;
+    const resHeight = req.body.height;
 
     const img = await h2i({
         html: sourceHtml,
+        vp: [resWidth,resHeight],
         puppeteerArgs: {
             executablePath: '/usr/bin/chromium',
             headless: true
