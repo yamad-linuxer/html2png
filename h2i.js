@@ -29,7 +29,7 @@ module.exports = async options => {
             transparent = false,
             waitUntil = 'networkidle0'
         })=> {
-            if (content) {
+            if (html && content) {
                 const template = handlebars.compile(html);
                 html = template(content);
             };
