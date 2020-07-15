@@ -16,39 +16,50 @@ function putLog(msg, log) {
     return
 };
 
-async function genResJson(sourceHtml, resWidth, resHeight) {
-    const img = await h2i({
-        html: sourceHtml,
-        vp: [resWidth,resHeight],
-        puppeteerArgs: {
-            executablePath: '/usr/bin/chromium',
-            headless: true
+async function genResJson(sourceHtml, sourceUrl, resWidth, resHeight) {
+    try {
+        const img = await h2i({
+            html: sourceHtml,
+            url: sourceUrl,
+            vp: [resWidth,resHeight],
+            puppeteerArgs: {
+                executablePath: '/usr/bin/chromium',
+                headless: true
+            }
+        });
+        const bImg = new Buffer.from(img);
+
+        return {
+            "png-base64": 'data:image/png;base64,'+bImg.toString('base64'),
+            // "png": bImg.toString('binary'),
+            "width: ": resWidth,
+            "height": resHeight,
+            "source": sourceHtml,
+            "url": sourceUrl
         }
-    });
-    const bImg = new Buffer.from(img);
-    return {
-        "png-base64": 'data:image/png;base64,'+bImg.toString('base64'),
-        // "png": bImg.toString('binary'),
-        "width: ": resWidth,
-        "height": resHeight,
-        "source": sourceHtml
-    }
-}
+    } catch(err) {
+        return Promise.reject(err)
+    };
+};
 
 app.get('/', async (req,res)=> {
     putLog('GET request received.');
 
     const sourceHtml = req.body.source;
+    const sourceUrl = req.body.url;
     const resWidth = req.body.width;
     const resHeight = req.body.height;
 
-    if (!(resWidth > 0 && resHeight > 0)) {
+    if (
+        !(resWidth > 0 && resHeight > 0) ||
+        !(sourceHtml.length > 0 || sourceUrl > 0)
+    ) {
         res.status(400).send('bad API call.');
         return
     };
 
     try {
-        const resJson = await genResJson(sourceHtml, resWidth, resHeight);
+        const resJson = await genResJson(sourceHtml, sourceUrl, resWidth, resHeight);
         res.json(resJson);
     } catch(err) {
         res.status(500).send('bad API call.');
@@ -60,6 +71,7 @@ app.post('/', async (req, res)=> {
     putLog('POST request received.');
 
     const sourceHtml = req.body.source;
+    const sourceUrl = req.body.url;
     const resWidth = req.body.width;
     const resHeight = req.body.height;
 
@@ -69,7 +81,7 @@ app.post('/', async (req, res)=> {
     };
 
     try {
-        const resJson = await genResJson(sourceHtml, resWidth, resHeight);
+        const resJson = await genResJson(sourceHtml, sourceUrl, resWidth, resHeight);
         res.json(resJson);
     } catch(err) {
         res.status(500).send('bad API call.');

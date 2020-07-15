@@ -5,12 +5,13 @@ const handlebars = require('handlebars');
 module.exports = async options => {
     const {
         html,
+        url,
         content,
         output,
         vp,
         puppeteerArgs = {}
     } = options;
-    if (!html) throw Error('You must provide an html property.');
+    // if (!html) throw Error('You must provide an html property.');
 
     const cluster = await Cluster.launch({
         concurrency: Cluster.CONCURRENCY_CONTEXT,
@@ -32,8 +33,12 @@ module.exports = async options => {
                 const template = handlebars.compile(html);
                 html = template(content);
             };
+            if (url) {
+                await page.goto(url, { waitUntil });
+            } else {
+                await page.setContent(html, { waitUntil });
+            }
             await page.setViewport({width:vp[0],height:vp[1]});
-            await page.setContent(html, { waitUntil });
             const element = await page.$('body');
             const buffer = await element.screenshot({path: output, omitBackground: transparent});
 

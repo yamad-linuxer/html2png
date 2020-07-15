@@ -24,9 +24,12 @@ $ node app.js
 
 JSONをPOSTまたはGETしてください。
 
+urlとsourceはどちらかが必須で，両方指定されていたらsourceが優先されます。
+
 ```
 {
     "source": "<!--実際のソース-->",
+    "url": "https://hogehoge.com/hoge.php",
     "width": 1234,
     "height": 4321
 }
@@ -36,10 +39,13 @@ JSONをPOSTまたはGETしてください。
 
 JSONが帰ってきます。
 
+url指定された場合はsourceを返しません。
+
 ```
 {
     "png-base64": "data:image/png;base64,ABC114514GG",
     "source": "<!--ソースがそのまま帰ってきます-->",
+    "url": "https://hogehoge.com/hoge.php",
     "width": 1234,
     "height: 4321
 }
