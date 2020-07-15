@@ -22,7 +22,7 @@ $ node app.js
 
 ### 送信
 
-JSONをPOSTしてください。
+JSONをPOSTまたはGETしてください。
 
 ```
 {
